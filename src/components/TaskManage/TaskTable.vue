@@ -6,6 +6,7 @@
       :pagination="pagination"
       :loading="loading"
       @change="handleTableChange"
+      class="table-content"
     >
       <a
         slot="action"
@@ -21,7 +22,7 @@
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
 import { task } from '../../const/index'
-
+import { taskHttp } from '../../util/api/index'
 export default {
   name: 'TaskTable',
   components: {},
@@ -76,6 +77,7 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
+      current: 1,
     }
   },
   computed: {
@@ -106,30 +108,41 @@ export default {
       return res
     },
   },
-  mounted() {
-    console.log(this.$message, 'sdasda')
-    console.log(this.$confirm, 'dsadsa')
-  },
+  mounted() {},
   methods: {
     handleTableChange(pagination) {
-      let current = pagination.current
-      this.$emit('search', current)
+      this.current = pagination.current
+      this.$emit('search', this.current)
     },
     endTask(record) {
-      console.log('end', record)
+      let that = this
       this.$confirm({
-        title: '确认停止该任务？',
-        content: '点击确认按钮，该任务将会停止',
-        onOK() {
-          // 发送删除命令，成功则提示
-          this.$message()
+        title: '确定要停止该任务吗？',
+        content: '点击确定，停止任务',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk() {
+          return taskHttp.endTask({ id: record.id }).then((res) => {
+            if (res.data.status === 'success') {
+              that.$message.success(res.data.msg)
+              // 成功则刷新任务列表
+              that.$emit('search', that.current)
+            }
+          })
         },
+        onCancel() {},
       })
     },
     downloadFile(record) {
       console.log('download', record)
+      // 导出 :todo
+      //   taskHttp.downloadConfig({ id: record.id }).then((res) => {})
     },
   },
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.task-table {
+}
+</style>

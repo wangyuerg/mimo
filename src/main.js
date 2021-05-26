@@ -14,6 +14,10 @@ import {
   Table,
   Modal,
   message,
+  Form,
+  Icon,
+  Upload,
+  Tooltip,
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css' // or 'ant-design-vue/dist/antd.less'
 
@@ -28,9 +32,13 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Table)
 Vue.use(Modal)
+Vue.use(Form)
+Vue.use(Icon)
+Vue.use(Upload)
+Vue.use(Tooltip)
 
 Vue.prototype.$message = message
-Vue.prototype.$confirm = confirm
+Vue.prototype.$confirm = Modal.confirm
 
 new Vue({
   router,

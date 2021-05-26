@@ -1,3 +1,4 @@
 import taskHttp from './task'
+import userHttp from './user'
 
-export { taskHttp }
+export { taskHttp, userHttp }

@@ -3,7 +3,7 @@
     <div class="task-search">
       <div class="search-top">
         <div class="search-title">任务查询</div>
-        <a-button type="primary"> 新建任务 </a-button>
+        <a-button type="primary" @click="clickCreate"> 新建任务 </a-button>
       </div>
       <div class="search-content">
         <a-row class="search-line" type="flex" justify="start">
@@ -86,6 +86,16 @@
         @search="search"
       ></task-table>
     </div>
+    <a-modal
+      v-model="createVisible"
+      title="新建任务"
+      @ok="createTask"
+      ok-text="确认"
+      cancel-text="取消"
+      v-if="createVisible"
+    >
+      <create-task ref="popup" @close="closeModal"></create-task>
+    </a-modal>
   </div>
 </template>
 
@@ -95,10 +105,11 @@
 // import { task } from '../const'
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import TaskTable from '../components/TaskManage/TaskTable'
+import CreateTask from '../components/TaskManage/CreateTask'
 import { taskHttp } from '../util/api/index'
 export default {
   name: 'TaskManage',
-  components: { TaskTable },
+  components: { TaskTable, CreateTask },
   data() {
     return {
       locale: locale,
@@ -152,6 +163,7 @@ export default {
       tableLoading: false,
       tableData: [],
       tableTotal: 45,
+      createVisible: false,
     }
   },
   methods: {
@@ -164,12 +176,20 @@ export default {
       // 点击查询
       // 将taskSearch处理成需要的数据传递给后端
       console.log('send', page, this.taskSearch)
-      taskHttp.getTaskInfo(this.taskSearch).then((res) => {
-        if (res.status === 200) {
-          this.handleTaskData(res.data.data.data)
-          this.pageTotal = res.data.data.total
-        }
-      })
+      this.tableLoading = true
+      taskHttp
+        .getTaskInfo(this.taskSearch)
+        .then((res) => {
+          if (res.status === 200) {
+            this.handleTaskData(res.data.data.data)
+            this.pageTotal = res.data.data.total
+          }
+          this.tableLoading = false
+        })
+        .catch((err) => {
+          this.tableLoading = false
+          console.log(err)
+        })
     },
     handleTaskData(data) {
       // :todo 最好后端加序号，因为是后端分页
@@ -177,6 +197,16 @@ export default {
         data[i].num = i + 1
       }
       this.tableData = data
+    },
+    clickCreate() {
+      this.createVisible = true
+    },
+    createTask() {
+      console.log('create task1!!!')
+      this.$refs.popup.submit()
+    },
+    closeModal() {
+      this.createVisible = false
     },
   },
 }
@@ -211,6 +241,10 @@ export default {
       padding: 0 0 10px 0;
       justify-content: flex-end;
     }
+  }
+  .task-result {
+    margin: 20px 0 20px 0;
+    background-color: white;
   }
 }
 </style>

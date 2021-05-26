@@ -7,8 +7,8 @@
     <a-layout-sider class="home-menu">
       <div class="logo">logo</div>
       <a-menu
+        v-model="currentMenuKey"
         mode="inline"
-        :default-selected-keys="defaultSelectKeys"
         @select="selectMenuItem"
         class="menu"
         theme="dark"
@@ -39,7 +39,6 @@ export default {
   },
   data() {
     return {
-      defaultSelectKeys: ['1'],
       menuList: [
         // 设置menu的地址
         {
@@ -62,7 +61,33 @@ export default {
         },
       ],
       username: '李梅',
+      currentMenuKey: ['1'],
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    // 渲染新链接时
+    next((vm) => {
+      // 此时无this
+      let path = to.fullPath
+      let currentMenuItem = vm.menuList.find((item) => {
+        return item.path === path
+      })
+      if (typeof currentMenuItem !== 'undefined') {
+        vm.currentMenuKey = [currentMenuItem.key]
+      }
+    })
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 跟新部分路由时
+    //此处有this，等效于watch，每次路由参数更新触发
+    let path = to.fullPath
+    let currentMenuItem = this.menuList.find((item) => {
+      return item.path === path
+    })
+    if (typeof currentMenuItem !== 'undefined') {
+      this.currentMenuKey = [currentMenuItem.key]
+    }
+    next()
   },
   methods: {
     selectMenuItem(item) {
@@ -115,7 +140,8 @@ export default {
   }
   .home-content {
     padding-left: 200px;
-    margin: 46px 16px 0;
+    margin: 56px 16px 0;
+    min-height: 100vh;
   }
 }
 </style>
