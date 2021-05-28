@@ -2,10 +2,12 @@
   <a-layout class="home">
     <a-layout-header class="home-top">
       <div class="top-platname">Massive MIMO智能优化系统</div>
-      <div class="top-userInfo">你好, {{ username }}</div>
+      <div class="top-userInfo">你好, {{ $store.state.userName }}</div>
     </a-layout-header>
     <a-layout-sider class="home-menu">
-      <div class="logo">logo</div>
+      <div class="logo">
+        <img class="logo-img" src="../assets/img/cmcc.jpg" />
+      </div>
       <a-menu
         v-model="currentMenuKey"
         mode="inline"
@@ -15,11 +17,11 @@
       >
         <a-menu-item key="1">任务中心</a-menu-item>
         <a-menu-item key="2">数据管理</a-menu-item>
-        <a-sub-menu key="3">
+        <!-- <a-sub-menu key="3">
           <span slot="title">test</span>
           <a-menu-item key="3-1">test1</a-menu-item>
           <a-menu-item key="3-2">test2</a-menu-item>
-        </a-sub-menu>
+        </a-sub-menu> -->
       </a-menu>
     </a-layout-sider>
     <a-layout-content class="home-content">
@@ -51,16 +53,15 @@ export default {
           title: '数据管理',
           path: '/data',
         },
-        {
-          key: '3-1',
-          title: 'test1',
-        },
-        {
-          key: '3-2',
-          title: 'test2',
-        },
+        // {
+        //   key: '3-1',
+        //   title: 'test1',
+        // },
+        // {
+        //   key: '3-2',
+        //   title: 'test2',
+        // },
       ],
-      username: '李梅',
       currentMenuKey: ['1'],
     }
   },
@@ -89,6 +90,7 @@ export default {
     }
     next()
   },
+  created() {},
   methods: {
     selectMenuItem(item) {
       let key = item.key
@@ -136,6 +138,10 @@ export default {
     left: 0;
     .logo {
       height: 40px;
+      background-color: #1b1835;
+      .logo-img {
+        height: 40px;
+      }
     }
   }
   .home-content {

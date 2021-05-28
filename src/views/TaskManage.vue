@@ -84,6 +84,7 @@
         :tableData="tableData"
         :total="tableTotal"
         @search="search"
+        type="task"
       ></task-table>
     </div>
     <a-modal
@@ -114,7 +115,7 @@ export default {
     return {
       locale: locale,
       taskSearch: {
-        name: 'xxxx',
+        name: '',
         place: [],
         creator: '',
         status: [],
@@ -182,7 +183,7 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.handleTaskData(res.data.data.data)
-            this.pageTotal = res.data.data.total
+            this.tableTotal = res.data.data.total
           }
           this.tableLoading = false
         })

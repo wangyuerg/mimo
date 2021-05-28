@@ -18,6 +18,7 @@ import {
   Icon,
   Upload,
   Tooltip,
+  Divider,
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css' // or 'ant-design-vue/dist/antd.less'
 
@@ -36,6 +37,7 @@ Vue.use(Form)
 Vue.use(Icon)
 Vue.use(Upload)
 Vue.use(Tooltip)
+Vue.use(Divider)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

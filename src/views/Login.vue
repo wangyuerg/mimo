@@ -77,6 +77,7 @@ export default {
         userHttp.login(param).then((res) => {
           if (res.data.status === 'success') {
             this.$store.commit('setRole', user.ROLE['LOGIN'])
+            this.$store.commit('setUserName', res.data.data.userName) // :todo从接口获取还是前端输入获取？
             this.$message.success('登陆成功')
             this.$router.push({ path: '/task' })
           }

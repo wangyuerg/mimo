@@ -98,6 +98,7 @@
         @change="uploadFile"
         :multiple="false"
         :beforeUpload="beforeUpload"
+        accept=".csv"
       >
         <span style="color: red; padding-right: 5px">*</span
         ><a-button> <a-icon type="upload" />上传小区csv文件</a-button>
@@ -253,13 +254,18 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .create-task {
   .form-fullnet {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     padding: 0 75px;
+    min-height: 70px;
+  }
+  .ant-upload-list {
+    text-overflow: ellipsis !important;
+    width: 200px !important;
   }
 }
 </style>
